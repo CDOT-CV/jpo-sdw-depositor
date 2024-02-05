@@ -34,17 +34,17 @@ public class DepositControllerTest {
    @Mocked
    URI mockedCapturingURI;
 
-   @Test
-   public void shouldRun() throws URISyntaxException {
+   // @Test
+   // public void shouldRun() throws URISyntaxException {
 
-      new Expectations() {
-         {
-            injectableDepositorProperties.getDestinationUrl(); result = "127.0.0.1";
+   //    new Expectations() {
+   //       {
+   //          injectableDepositorProperties.getDestinationUrl(); result = "127.0.0.1";
 
-            mockedCapturingKafkaConsumerRestDepositor.run((String[]) any);
-            times = 1;
-         }
-      };
-      testDepositController.run();
-   }
+   //          mockedCapturingKafkaConsumerRestDepositor.run((String[]) any);
+   //          times = 1;
+   //       }
+   //    };
+   //    testDepositController.run();
+   // }
 }

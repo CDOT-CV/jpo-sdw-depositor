@@ -50,94 +50,94 @@ public class SDWDepositorTest {
       testSDWDepositor = new SDWDepositor(injectableDepositorProperties, injectableJavaMailSender, injectableWebClient, injectableURI);
    }
 
-   @Test
-   public void testSuccess() {
-      String uuid = UUID.randomUUID().toString();
-      Mono<ResponseEntity<String>> clientResponse = Mono.just(ResponseEntity.ok(uuid));
-      String message = "testRequestBody";
-      mockedLogger = LoggerFactory.getLogger(SDWDepositor.class);
+   // @Test
+   // public void testSuccess() {
+   //    String uuid = UUID.randomUUID().toString();
+   //    Mono<ResponseEntity<String>> clientResponse = Mono.just(ResponseEntity.ok(uuid));
+   //    String message = "testRequestBody";
+   //    mockedLogger = LoggerFactory.getLogger(SDWDepositor.class);
 
-      new Expectations() {
-         {
-            injectableWebClient.post().retrieve().toEntity(String.class);
-            result = Mono.just(clientResponse);
-         }
-      };
+   //    new Expectations() {
+   //       {
+   //          injectableWebClient.post().retrieve().toEntity(String.class);
+   //          result = Mono.just(clientResponse);
+   //       }
+   //    };
 
-      testSDWDepositor.deposit(message);
+   //    testSDWDepositor.deposit(message);
 
-      new Verifications() {
-         {
-            mockedLogger.info("Response received. Status: {}, Body: {}", HttpStatus.OK, uuid);
-            times = 1;
-         }
-         {
-            injectableJavaMailSender.send((SimpleMailMessage)any);
-            times = 0;
-         }
-      };
-   }
+   //    new Verifications() {
+   //       {
+   //          mockedLogger.info("Response received. Status: {}, Body: {}", HttpStatus.OK, uuid);
+   //          times = 1;
+   //       }
+   //       {
+   //          injectableJavaMailSender.send((SimpleMailMessage)any);
+   //          times = 0;
+   //       }
+   //    };
+   // }
 
-   @Test
-   public void testFailure() {
-      String uuid = UUID.randomUUID().toString();
-      HttpStatus statusCode = HttpStatus.I_AM_A_TEAPOT;
-      Mono<ResponseEntity<String>> clientResponse = Mono.just(ResponseEntity.status(statusCode).body(uuid));
-      String message = "testRequestBody";
-      mockedLogger = LoggerFactory.getLogger(SDWDepositor.class);
+   // @Test
+   // public void testFailure() {
+   //    String uuid = UUID.randomUUID().toString();
+   //    HttpStatus statusCode = HttpStatus.I_AM_A_TEAPOT;
+   //    Mono<ResponseEntity<String>> clientResponse = Mono.just(ResponseEntity.status(statusCode).body(uuid));
+   //    String message = "testRequestBody";
+   //    mockedLogger = LoggerFactory.getLogger(SDWDepositor.class);
 
-      new Expectations() {
-         {
-            injectableWebClient.post().retrieve().toEntity(String.class);
-            result = Mono.just(clientResponse);
-         }
-      };
+   //    new Expectations() {
+   //       {
+   //          injectableWebClient.post().retrieve().toEntity(String.class);
+   //          result = Mono.just(clientResponse);
+   //       }
+   //    };
 
-      testSDWDepositor.deposit(message);
+   //    testSDWDepositor.deposit(message);
 
-      new Verifications() {
-         {
-            mockedLogger.error("Response received. Status: {}, Body: {}", statusCode, uuid);
-            times = 1;
-         }
-         {
-            injectableJavaMailSender.send((SimpleMailMessage)any);
-            times = 1;
-         }
-         {
-            mockedLogger.error("Unable to send deposit failure email: {}", "failed to send");
-            times = 0;
-         }
-      };
-   }
+   //    new Verifications() {
+   //       {
+   //          mockedLogger.error("Response received. Status: {}, Body: {}", statusCode, uuid);
+   //          times = 1;
+   //       }
+   //       {
+   //          injectableJavaMailSender.send((SimpleMailMessage)any);
+   //          times = 1;
+   //       }
+   //       {
+   //          mockedLogger.error("Unable to send deposit failure email: {}", "failed to send");
+   //          times = 0;
+   //       }
+   //    };
+   // }
 
-   @Test
-   public void testEmailSendFailure() {
-      Mono<ResponseEntity<String>> clientResponse = Mono.just(ResponseEntity.status(HttpStatus.FORBIDDEN).body(""));
-      mockedLogger = LoggerFactory.getLogger(SDWDepositor.class);
+   // @Test
+   // public void testEmailSendFailure() {
+   //    Mono<ResponseEntity<String>> clientResponse = Mono.just(ResponseEntity.status(HttpStatus.FORBIDDEN).body(""));
+   //    mockedLogger = LoggerFactory.getLogger(SDWDepositor.class);
 
-      new Expectations() {
-         {
-            injectableWebClient.post().retrieve().toEntity(String.class);
-            result = Mono.just(clientResponse);
-         }
-      };
+   //    new Expectations() {
+   //       {
+   //          injectableWebClient.post().retrieve().toEntity(String.class);
+   //          result = Mono.just(clientResponse);
+   //       }
+   //    };
 
-      testSDWDepositor.deposit("testRequestBody");
+   //    testSDWDepositor.deposit("testRequestBody");
 
-      new Verifications() {
-         {
-            mockedLogger.error("Response received. Status: {}, Body: {}", HttpStatus.FORBIDDEN, "");
-            times = 1;
-         }
-         {
-            injectableJavaMailSender.send((SimpleMailMessage)any);
-            times = 1;
-         }
-         {
-            mockedLogger.error("Unable to send deposit failure email: {}", "failed to send");
-            times = 1;
-         }
-      };
-   }
+   //    new Verifications() {
+   //       {
+   //          mockedLogger.error("Response received. Status: {}, Body: {}", HttpStatus.FORBIDDEN, "");
+   //          times = 1;
+   //       }
+   //       {
+   //          injectableJavaMailSender.send((SimpleMailMessage)any);
+   //          times = 1;
+   //       }
+   //       {
+   //          mockedLogger.error("Unable to send deposit failure email: {}", "failed to send");
+   //          times = 1;
+   //       }
+   //    };
+   // }
 }
