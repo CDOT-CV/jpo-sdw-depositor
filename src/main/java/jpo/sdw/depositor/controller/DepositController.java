@@ -23,9 +23,9 @@ public class DepositController {
 
       private static final Logger logger = LoggerFactory.getLogger(DepositController.class);
 
-      private KafkaConsumerRestDepositor kafkaConsumerRestDepositor;
+      private final KafkaConsumerRestDepositor kafkaConsumerRestDepositor;
 
-      private DepositorProperties depositorProperties;
+      private final DepositorProperties depositorProperties;
 
       @Autowired
       public DepositController(DepositorProperties depositorProperties, JavaMailSender mailSender,
