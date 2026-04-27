@@ -27,15 +27,15 @@ public class KafkaConsumerRestDepositor extends KafkaConsumerDepositor<String> {
 
    private static final Logger logger = LoggerFactory.getLogger(KafkaConsumerRestDepositor.class);
 
-   private RestDepositor<String> restDepositor;
-   private KafkaConsumer<String, String> kafkaConsumer;
-   private JSONObject jsonMsgList;
-   private String encodeType;
+   private final RestDepositor<String> restDepositor;
+   private final KafkaConsumer<String, String> kafkaConsumer;
+   private final JSONObject jsonMsgList;
+   private final String encodeType;
 
    public KafkaConsumerRestDepositor(KafkaConsumer<String, String> kafkaConsumer, RestDepositor<String> restDepositor,
          String encodeType) {
-      this.setKafkaConsumer(kafkaConsumer);
-      this.setRestDepositor(restDepositor);
+      this.kafkaConsumer = kafkaConsumer;
+      this.restDepositor = restDepositor;
       this.jsonMsgList = new JSONObject();
       this.encodeType = encodeType;
    }
@@ -81,16 +81,8 @@ public class KafkaConsumerRestDepositor extends KafkaConsumerDepositor<String> {
       return restDepositor;
    }
 
-   public void setRestDepositor(RestDepositor<String> restDepositor) {
-      this.restDepositor = restDepositor;
-   }
-
    public KafkaConsumer<String, String> getKafkaConsumer() {
       return kafkaConsumer;
-   }
-
-   public void setKafkaConsumer(KafkaConsumer<String, String> kafkaConsumer) {
-      this.kafkaConsumer = kafkaConsumer;
    }
 
 }
