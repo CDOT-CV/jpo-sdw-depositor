@@ -38,7 +38,8 @@ public class DepositorPropertiesTest {
             testDepositorProperties.getSubscriptionTopics()[0]);
       assertEquals("Incorrect destinationUrl", expectedDestinationUrl, testDepositorProperties.getDestinationUrl());
       assertEquals("Incorrect groupId", expectedGroupId, testDepositorProperties.getGroupId());
-      assertEquals("Incorrect apikey", expectedApiKey, testDepositorProperties.getApiKey());assertEquals("Incorrect from email", expectedFromEmail, testDepositorProperties.getEmailFrom());
+      assertEquals("Incorrect apikey", expectedApiKey, testDepositorProperties.getApiKey());
+      assertEquals("Incorrect from email", expectedFromEmail, testDepositorProperties.getEmailFrom());
       assertArrayEquals("Incorrect email list", expectedEmailList, testDepositorProperties.getEmailList());
    }
 

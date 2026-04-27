@@ -85,6 +85,7 @@ public class SDWDepositorTest {
       doReturn(Mono.just(ResponseEntity.ok(uuid)))
             .when(responseSpec).toEntity(String.class);
 
+      // SDWDepositor.deposit() returns void and subscribes synchronously; toEntity() stubs return Mono.just() which executes immediately on the calling thread, so logCaptor assertions run after subscription completes.
       sdwDepositor.deposit("testRequestBody");
 
       assertThat(logCaptor.getInfoLogs(),
@@ -99,6 +100,7 @@ public class SDWDepositorTest {
       doReturn(Mono.just(ResponseEntity.status(statusCode).body(uuid)))
             .when(responseSpec).toEntity(String.class);
 
+      // SDWDepositor.deposit() returns void and subscribes synchronously; toEntity() stubs return Mono.just() which executes immediately on the calling thread, so logCaptor assertions run after subscription completes.
       sdwDepositor.deposit("testRequestBody");
 
       assertThat(logCaptor.getErrorLogs(),
@@ -113,6 +115,7 @@ public class SDWDepositorTest {
       doThrow(new RuntimeException("failed to send"))
             .when(javaMailSender).send(any(SimpleMailMessage.class));
 
+      // SDWDepositor.deposit() returns void and subscribes synchronously; toEntity() stubs return Mono.just() which executes immediately on the calling thread, so logCaptor assertions run after subscription completes.
       sdwDepositor.deposit("testRequestBody");
 
       assertThat(logCaptor.getErrorLogs(),
