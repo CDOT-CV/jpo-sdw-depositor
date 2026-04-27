@@ -43,7 +43,7 @@ public class KafkaConsumerRestDepositor extends KafkaConsumerDepositor<String> {
    @Override
    public void run(String... topics) {
       this.getKafkaConsumer().subscribe(Arrays.asList(topics));
-      while (LoopController.loop()) { // NOSONAR (used for unit testing)
+      while (LoopController.loop()) { // NOSONAR — LoopController.loop() is a testing seam; always returns true in production
          ConsumerRecords<String, String> records = this.getKafkaConsumer().poll(Duration.ofMillis(100));
          JSONArray jsonRequests = new JSONArray();
 
