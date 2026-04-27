@@ -1,6 +1,6 @@
 services:
   kafka:
-    image: bitnamilegacy/kafka:3.8.0
+    image: bitnami/kafka:3.9.0
     hostname: kafka
     restart: on-failure:3
     healthcheck:
