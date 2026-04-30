@@ -28,8 +28,6 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
 
   sdw_depositor:
     build:
