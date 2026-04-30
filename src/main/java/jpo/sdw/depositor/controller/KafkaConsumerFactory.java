@@ -30,7 +30,7 @@ public class KafkaConsumerFactory {
       props.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, 100000);
       props.put(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, 100);
 
-      String kafkaType = System.getenv("KAFKA_TYPE");
+      String kafkaType = getEnvironmentVariable("KAFKA_TYPE");
       if (kafkaType != null && kafkaType.equals("CONFLUENT")) {
          addConfluentProperties(props);
       }
