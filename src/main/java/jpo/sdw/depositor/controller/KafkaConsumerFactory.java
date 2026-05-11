@@ -3,11 +3,15 @@ package jpo.sdw.depositor.controller;
 import java.util.Properties;
 
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jpo.sdw.depositor.DepositorProperties;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 
 public class KafkaConsumerFactory {
+
+   private static final Logger logger = LoggerFactory.getLogger(KafkaConsumerFactory.class);
 
    private KafkaConsumerFactory() {
       throw new UnsupportedOperationException();
@@ -57,7 +61,7 @@ public class KafkaConsumerFactory {
    private static String getEnvironmentVariable(String variableName) {
       String value = System.getenv(variableName);
       if (value == null || value.equals("")) {
-         System.out.println("Something went wrong retrieving the environment variable " + variableName);
+         logger.warn("Environment variable {} is missing or empty", variableName);
       }
       return value;
    }
