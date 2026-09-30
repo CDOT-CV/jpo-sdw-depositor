@@ -1,5 +1,6 @@
 name: CI
-on: 
+on:
+  workflow_dispatch:
   pull_request:
     types: [opened, reopened, synchronize]
   push:
@@ -31,7 +32,7 @@ jobs:
          path: /__w/jpo-sdw-depositor/jpo-sdw-depositor/target 
          if-no-files-found: error
   sonar:
-    if: github.event.pull_request.base.repo.owner.login == 'usdot-jpo-ode'
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     needs: [jpo-sdw-depositor]
     runs-on: ubuntu-latest
     steps:
@@ -47,27 +48,22 @@ jobs:
       - name: Find jacoco.xml
         shell: bash
         run: |
-          find "$GITHUB_WORKSPACE" -name "jacoco.xml"  
-      - name: Setup SonarScanner
-        uses: warchant/setup-sonar-scanner@v7
+          find "$GITHUB_WORKSPACE" -name "jacoco.xml"
       - name: Generate sonar properties file
         run: |
-          cat <<EOF > /tmp/sonar-scanner.properties
+          cat <<EOF > sonar-project.properties
           sonar.host.url=https://sonarcloud.io
           sonar.coverage.jacoco.xmlReportPaths=/home/runner/work/jpo-sdw-depositor/jpo-sdw-depositor/home/runner/work/jpo-sdw-depositor/jpo-sdw-depositor/target/site/jacoco/jacoco.xml
           sonar.java.binaries=home/runner/work/jpo-sdw-depositor/jpo-sdw-depositor/target
           sonar.projectName=jpo-sdw-depositor
-          sonar.projectKey=usdot-jpo-ode_jpo-sdw-depositor
-          sonar.organization=usdot-jpo-ode
+          sonar.projectKey=${{ github.repository_owner }}_jpo-sdw-depositor
+          sonar.organization=${{ vars.SONAR_ORGANIZATION || github.repository_owner }}
           jpo-sdw-depositor.sonar.projectBaseDir=home/runner/work/jpo-sdw-depositor/jpo-sdw-depositor
           jpo-sdw-depositor.sonar.sources=src
           jpo-sdw-depositor.sonar.tests=src/test
           jpo-sdw-depositor.sonar.test.inclusions=src/test/**
           EOF
       - name: Run SonarScanner
-        uses: usdot-fhwa-stol/actions/sonar-scanner@main
-        with:
-          sonar-properties-path: /tmp/sonar-scanner.properties
-          sonar-token: ${{ secrets.SONAR_TOKEN }}
-
-          working-dir: $GITHUB_WORKSPACE                 
+        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
